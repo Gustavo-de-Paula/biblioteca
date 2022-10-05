@@ -9,11 +9,13 @@ public class LivroDto {
     private Long id;
     private String nome;
     private String genero;
+    private String autor;
 
     public LivroDto(Livro livro){
         this.id = livro.getId();
         this.nome = livro.getNome();
         this.genero = livro.getGenero().toString();
+        this.autor = livro.getAutor().getNome();
     }
 
     public static List<LivroDto> converter(List<Livro> livros){
@@ -29,4 +31,5 @@ public class LivroDto {
     public String getGenero() {
         return genero;
     }
+    public String getAutor() {return autor;}
 }
