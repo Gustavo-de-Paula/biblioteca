@@ -1,14 +1,17 @@
 package br.com.gustavodepaula.biblioteca.controller;
 
+import br.com.gustavodepaula.biblioteca.controller.form.EmprestimoForm;
 import br.com.gustavodepaula.biblioteca.dto.EmprestimoDto;
 import br.com.gustavodepaula.biblioteca.model.Emprestimo;
 import br.com.gustavodepaula.biblioteca.repository.EmprestimoRepository;
+import br.com.gustavodepaula.biblioteca.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -16,6 +19,8 @@ import java.util.List;
 public class EmprestimoController {
     @Autowired
     private EmprestimoRepository emprestimoRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @GetMapping
     public List<EmprestimoDto> listarEmprestimos() {
@@ -39,5 +44,14 @@ public class EmprestimoController {
     public List<EmprestimoDto> buscarPorNomeUsuario(@PathVariable String usuarioNome) {
         List<Emprestimo> emprestimos = emprestimoRepository.findByUsuario_Nome(usuarioNome.toUpperCase());
         return EmprestimoDto.converter(emprestimos);
+    }
+
+    @PostMapping
+    public ResponseEntity<EmprestimoDto> cadastrarEmprestimo(@RequestBody @Valid EmprestimoForm form, UriComponentsBuilder uriBuilder) {
+        Emprestimo emprestimo = form.converter(usuarioRepository);
+        emprestimoRepository.save(emprestimo);
+
+        URI uri = uriBuilder.path("/emprestimos/{id}").buildAndExpand(emprestimo.getId()).toUri();
+        return ResponseEntity.created(uri).body(new EmprestimoDto(emprestimo));
     }
 }

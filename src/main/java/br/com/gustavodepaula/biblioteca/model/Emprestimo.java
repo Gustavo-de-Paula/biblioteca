@@ -3,6 +3,7 @@ package br.com.gustavodepaula.biblioteca.model;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,10 +22,11 @@ public class Emprestimo {
 
     public Emprestimo() {
     }
-    public Emprestimo(Usuario usuario, LocalDate dataEmprestimo, LocalDate dataDevolucao) {
+    public Emprestimo(Usuario usuario) {
         this.usuario = usuario;
         this.dataEmprestimo = LocalDate.now();
         this.dataDevolucao = dataEmprestimo.plus(1, ChronoUnit.WEEKS);
+        this.livros = new ArrayList<>();
     }
 
     @Override
