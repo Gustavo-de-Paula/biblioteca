@@ -7,6 +7,8 @@ import br.com.gustavodepaula.biblioteca.model.Emprestimo;
 import br.com.gustavodepaula.biblioteca.repository.EmprestimoRepository;
 import br.com.gustavodepaula.biblioteca.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -29,6 +31,7 @@ public class EmprestimoController {
     private UsuarioRepository usuarioRepository;
 
     @GetMapping
+    @Cacheable(value = "listaDeEmprestimos")
     public Page<EmprestimoDto> listarEmprestimos(@PageableDefault(sort = "id")Pageable pageable) {
         Page<Emprestimo> emprestimos = emprestimoRepository.findAll(pageable);
         return EmprestimoDto.converter(emprestimos);
@@ -58,6 +61,7 @@ public class EmprestimoController {
 
     @PostMapping
     @Transactional
+    @CacheEvict(value = "listaDeEmprestimos", allEntries = true)
     public ResponseEntity<EmprestimoDto> cadastrarEmprestimo(@RequestBody @Valid EmprestimoForm form, UriComponentsBuilder uriBuilder) {
         Emprestimo emprestimo = form.converter(usuarioRepository);
         emprestimoRepository.save(emprestimo);
@@ -68,6 +72,7 @@ public class EmprestimoController {
 
     @PutMapping("/{id}")
     @Transactional
+    @CacheEvict(value = "listaDeEmprestimos", allEntries = true)
     public ResponseEntity<EmprestimoDto> atualizarEmprestimo(@PathVariable Long id, @RequestBody @Valid AtualizacaoEmprestimoForm form) {
         Optional<Emprestimo> emprestimo = emprestimoRepository.findById(id);
 
@@ -81,6 +86,7 @@ public class EmprestimoController {
 
     @DeleteMapping("/{id}")
     @Transactional
+    @CacheEvict(value = "listaDeEmprestimos", allEntries = true)
     public ResponseEntity<?> removerEmprestimo(@PathVariable Long id) {
         Optional<Emprestimo> emprestimo = emprestimoRepository.findById(id);
 
