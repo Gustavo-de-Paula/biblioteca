@@ -10,9 +10,12 @@ public class Livro {
     @Enumerated(EnumType.STRING)
     private Genero genero;
 
-    private String nome;
+    @ManyToOne
     private Autor autor;
+    @ManyToOne
     private Emprestimo emprestimo;
+
+    private String nome;
 
     public Livro() {
     }
