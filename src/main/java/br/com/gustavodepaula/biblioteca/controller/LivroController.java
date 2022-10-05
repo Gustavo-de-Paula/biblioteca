@@ -23,7 +23,7 @@ public class LivroController {
             List<Livro> livros = livroRepository.findAll();
             return LivroDto.converter(livros);
         } else {
-            List<Livro> livros = livroRepository.findByAutor_Nome(autor);
+            List<Livro> livros = livroRepository.findByAutor_Nome(autor.toUpperCase());
             return LivroDto.converter(livros);
         }
     }
