@@ -35,9 +35,9 @@ public class LivroController {
     }
 
     @GetMapping("/nome/{nome}")
-    public LivroDto buscarPorNome(@PathVariable String nome) {
-        Livro livro = livroRepository.findByNome(nome.toUpperCase());
-        return new LivroDto(livro);
+    public List<LivroDto> buscarPorNome(@PathVariable String nome) {
+        List<Livro> livros = livroRepository.findByNome(nome.toUpperCase());
+        return LivroDto.converter(livros);
     }
 
     @GetMapping("/autor/{autor}")
