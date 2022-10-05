@@ -2,6 +2,9 @@ package br.com.gustavodepaula.biblioteca.dto;
 
 import br.com.gustavodepaula.biblioteca.model.Livro;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class LivroDto {
     private Long id;
     private String nome;
@@ -11,6 +14,10 @@ public class LivroDto {
         this.id = livro.getId();
         this.nome = livro.getNome();
         this.genero = livro.getGenero().toString();
+    }
+
+    public static List<LivroDto> converter(List<Livro> livros){
+        return livros.stream().map(LivroDto::new).collect(Collectors.toList());
     }
 
     public Long getId() {
