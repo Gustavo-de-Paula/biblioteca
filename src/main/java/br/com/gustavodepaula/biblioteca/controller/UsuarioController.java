@@ -32,9 +32,9 @@ public class UsuarioController {
     }
 
     @GetMapping("/nome/{nome}")
-    public UsuarioDto buscarPorNome(@PathVariable String nome) {
-        Usuario usuario = usuarioRepository.findByNome(nome.toUpperCase());
-        return new UsuarioDto(usuario);
+    public List<UsuarioDto> buscarPorNome(@PathVariable String nome) {
+        List<Usuario> usuarios = usuarioRepository.findByNome(nome.toUpperCase());
+        return UsuarioDto.converter(usuarios);
     }
 
     @PostMapping
