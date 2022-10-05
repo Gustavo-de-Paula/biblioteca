@@ -1,14 +1,17 @@
 package br.com.gustavodepaula.biblioteca.controller;
 
+import br.com.gustavodepaula.biblioteca.controller.form.LivroForm;
 import br.com.gustavodepaula.biblioteca.dto.LivroDto;
 import br.com.gustavodepaula.biblioteca.model.Livro;
+import br.com.gustavodepaula.biblioteca.repository.AutorRepository;
 import br.com.gustavodepaula.biblioteca.repository.LivroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -16,6 +19,8 @@ import java.util.List;
 public class LivroController {
     @Autowired
     private LivroRepository livroRepository;
+    @Autowired
+    private AutorRepository autorRepository;
 
     @GetMapping
     public List<LivroDto> listarLivros(String autor) {
@@ -26,5 +31,14 @@ public class LivroController {
             List<Livro> livros = livroRepository.findByAutor_Nome(autor.toUpperCase());
             return LivroDto.converter(livros);
         }
+    }
+
+    @PostMapping
+    public ResponseEntity<LivroDto> cadastrarLivro(@RequestBody @Valid LivroForm form, UriComponentsBuilder uriBuilder) {
+        Livro livro = form.converter(autorRepository);
+        livroRepository.save(livro);
+
+        URI uri = uriBuilder.path("/livros/{id}").buildAndExpand(livro.getId()).toUri();
+        return ResponseEntity.created(uri).body(new LivroDto(livro));
     }
 }

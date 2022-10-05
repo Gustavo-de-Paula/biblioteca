@@ -7,8 +7,6 @@ import java.util.Objects;
 public class Livro {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Enumerated(EnumType.STRING)
-    private Genero genero;
 
     @ManyToOne
     private Autor autor;
@@ -19,8 +17,7 @@ public class Livro {
 
     public Livro() {
     }
-    public Livro(Genero genero, Autor autor, String nome) {
-        this.genero = genero;
+    public Livro(Autor autor, String nome) {
         this.autor = autor;
         this.nome = nome;
     }
@@ -31,14 +28,13 @@ public class Livro {
         if (o == null || getClass() != o.getClass()) return false;
         Livro livro = (Livro) o;
         return Objects.equals(id, livro.id)
-                && genero == livro.genero
                 && Objects.equals(nome, livro.nome)
                 && Objects.equals(autor, livro.autor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, genero, nome, autor);
+        return Objects.hash(id, nome, autor);
     }
 
     public Long getId() {
@@ -46,12 +42,6 @@ public class Livro {
     }
     public void setId(Long id) {
         this.id = id;
-    }
-    public Genero getGenero() {
-        return genero;
-    }
-    public void setGenero(Genero genero) {
-        this.genero = genero;
     }
     public String getNome() {
         return nome;

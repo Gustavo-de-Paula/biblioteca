@@ -1,26 +1,27 @@
 package br.com.gustavodepaula.biblioteca.controller.form;
 
+import br.com.gustavodepaula.biblioteca.model.Autor;
+import br.com.gustavodepaula.biblioteca.model.Livro;
+import br.com.gustavodepaula.biblioteca.repository.AutorRepository;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotBlank;
+
 public class LivroForm {
+    @NotBlank @Length(min = 1)
     private String nome;
-    private String autor;
-    private String genero;
+    @NotBlank @Length(min = 10)
+    private String nomeAutor;
+
+    public Livro converter(AutorRepository repository) {
+        Autor autor = repository.findByNome(nomeAutor.toUpperCase());
+        return new Livro(autor, nome.toUpperCase());
+    }
 
     public String getNome() {
         return nome;
     }
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-    public String getAutor() {
-        return autor;
-    }
-    public void setAutor(String autor) {
-        this.autor = autor;
-    }
-    public String getGenero() {
-        return genero;
-    }
-    public void setGenero(String genero) {
-        this.genero = genero;
+    public String getNomeAutor() {
+        return nomeAutor;
     }
 }
