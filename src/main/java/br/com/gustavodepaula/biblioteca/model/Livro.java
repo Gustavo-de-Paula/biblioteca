@@ -20,6 +20,7 @@ public class Livro {
     public Livro(Autor autor, String nome) {
         this.autor = autor;
         this.nome = nome;
+        this.emprestimo = null;
     }
 
     @Override
@@ -28,13 +29,14 @@ public class Livro {
         if (o == null || getClass() != o.getClass()) return false;
         Livro livro = (Livro) o;
         return Objects.equals(id, livro.id)
-                && Objects.equals(nome, livro.nome)
-                && Objects.equals(autor, livro.autor);
+                && Objects.equals(autor, livro.autor)
+                && Objects.equals(emprestimo, livro.emprestimo)
+                && Objects.equals(nome, livro.nome);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, autor);
+        return Objects.hash(id, autor, emprestimo, nome);
     }
 
     public Long getId() {
@@ -54,5 +56,11 @@ public class Livro {
     }
     public void setAutor(Autor autor) {
         this.autor = autor;
+    }
+    public Emprestimo getEmprestimo() {
+        return emprestimo;
+    }
+    public void setEmprestimo(Emprestimo emprestimo) {
+        this.emprestimo = emprestimo;
     }
 }
