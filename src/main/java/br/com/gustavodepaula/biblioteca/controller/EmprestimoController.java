@@ -7,6 +7,9 @@ import br.com.gustavodepaula.biblioteca.model.Emprestimo;
 import br.com.gustavodepaula.biblioteca.repository.EmprestimoRepository;
 import br.com.gustavodepaula.biblioteca.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -26,8 +29,8 @@ public class EmprestimoController {
     private UsuarioRepository usuarioRepository;
 
     @GetMapping
-    public List<EmprestimoDto> listarEmprestimos() {
-        List<Emprestimo> emprestimos = emprestimoRepository.findAll();
+    public Page<EmprestimoDto> listarEmprestimos(@PageableDefault(sort = "id")Pageable pageable) {
+        Page<Emprestimo> emprestimos = emprestimoRepository.findAll(pageable);
         return EmprestimoDto.converter(emprestimos);
     }
 
@@ -42,14 +45,14 @@ public class EmprestimoController {
     }
 
     @GetMapping("/usuario/id/{usuarioId}")
-    public List<EmprestimoDto> buscarPorIdUsuario(@PathVariable Long usuarioId) {
-        List<Emprestimo> emprestimos = emprestimoRepository.findByUsuario_Id(usuarioId);
+    public Page<EmprestimoDto> buscarPorIdUsuario(@PathVariable Long usuarioId, @PageableDefault(sort = "id") Pageable pageable) {
+        Page<Emprestimo> emprestimos = emprestimoRepository.findByUsuario_Id(usuarioId, pageable);
         return EmprestimoDto.converter(emprestimos);
     }
 
     @GetMapping("/usuario/nome/{usuarioNome}")
-    public List<EmprestimoDto> buscarPorNomeUsuario(@PathVariable String usuarioNome) {
-        List<Emprestimo> emprestimos = emprestimoRepository.findByUsuario_Nome(usuarioNome.toUpperCase());
+    public Page<EmprestimoDto> buscarPorNomeUsuario(@PathVariable String usuarioNome, @PageableDefault(sort = "id") Pageable pageable) {
+        Page<Emprestimo> emprestimos = emprestimoRepository.findByUsuario_Nome(usuarioNome.toUpperCase(), pageable);
         return EmprestimoDto.converter(emprestimos);
     }
 

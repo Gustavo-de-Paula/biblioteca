@@ -1,6 +1,7 @@
 package br.com.gustavodepaula.biblioteca.dto;
 
 import br.com.gustavodepaula.biblioteca.model.Emprestimo;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,6 +31,10 @@ public class EmprestimoDto {
 
     public static List<EmprestimoDto> converter(List<Emprestimo> emprestimos){
         return emprestimos.stream().map(EmprestimoDto::new).collect(Collectors.toList());
+    }
+
+    public static Page<EmprestimoDto> converter(Page<Emprestimo> emprestimos){
+        return emprestimos.map(EmprestimoDto::new);
     }
 
     public Long getId() {
