@@ -1,7 +1,6 @@
 package br.com.gustavodepaula.biblioteca.dto;
 
 import br.com.gustavodepaula.biblioteca.model.Autor;
-import br.com.gustavodepaula.biblioteca.model.Livro;
 
 import java.util.List;
 import java.util.stream.Collectors;

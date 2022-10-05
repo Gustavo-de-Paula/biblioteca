@@ -14,6 +14,12 @@ public class Autor {
 
     private String nome;
 
+    public Autor() {
+    }
+    public Autor(String nome) {
+        this.nome = nome;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

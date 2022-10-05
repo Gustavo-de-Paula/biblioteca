@@ -1,16 +1,16 @@
 package br.com.gustavodepaula.biblioteca.controller;
 
+import br.com.gustavodepaula.biblioteca.controller.form.AutorForm;
 import br.com.gustavodepaula.biblioteca.dto.AutorDto;
-import br.com.gustavodepaula.biblioteca.dto.UsuarioDto;
 import br.com.gustavodepaula.biblioteca.model.Autor;
-import br.com.gustavodepaula.biblioteca.model.Usuario;
 import br.com.gustavodepaula.biblioteca.repository.AutorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -35,5 +35,14 @@ public class AutorController {
     public AutorDto buscarPorNome(@PathVariable String nome) {
         Autor autor = autorRepository.findByNome(nome.toUpperCase());
         return new AutorDto(autor);
+    }
+
+    @PostMapping
+    public ResponseEntity<AutorDto> cadastrarAutor(@RequestBody @Valid AutorForm form, UriComponentsBuilder uriBuilder) {
+        Autor autor = form.converter();
+        autorRepository.save(autor);
+
+        URI uri = uriBuilder.path("/autores/{id}").buildAndExpand(autor.getId()).toUri();
+        return ResponseEntity.created(uri).body(new AutorDto(autor));
     }
 }
