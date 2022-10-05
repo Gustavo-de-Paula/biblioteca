@@ -1,10 +1,7 @@
 package br.com.gustavodepaula.biblioteca.controller;
 
-import br.com.gustavodepaula.biblioteca.controller.form.LivroForm;
 import br.com.gustavodepaula.biblioteca.controller.form.UsuarioForm;
-import br.com.gustavodepaula.biblioteca.dto.LivroDto;
 import br.com.gustavodepaula.biblioteca.dto.UsuarioDto;
-import br.com.gustavodepaula.biblioteca.model.Livro;
 import br.com.gustavodepaula.biblioteca.model.Usuario;
 import br.com.gustavodepaula.biblioteca.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +32,9 @@ public class UsuarioController {
     }
 
     @GetMapping("/nome/{nome}")
-    public List<UsuarioDto> listarPorNome(@PathVariable String nome) {
-        if (nome == null) {
-            return listarUsuarios();
-        } else {
-            List<Usuario> usuarios = usuarioRepository.findByNome(nome.toUpperCase());
-            return UsuarioDto.converter(usuarios);
-        }
+    public UsuarioDto listarPorNome(@PathVariable String nome) {
+        Usuario usuario = usuarioRepository.findByNome(nome.toUpperCase());
+        return new UsuarioDto(usuario);
     }
 
     @PostMapping
