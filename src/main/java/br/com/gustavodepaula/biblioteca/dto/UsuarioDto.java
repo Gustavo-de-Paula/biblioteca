@@ -17,4 +17,11 @@ public class UsuarioDto {
     public static List<UsuarioDto> converter(List<Usuario> usuarios) {
         return usuarios.stream().map(UsuarioDto::new).collect(Collectors.toList());
     }
+
+    public Long getId() {
+        return id;
+    }
+    public String getNome() {
+        return nome;
+    }
 }
