@@ -11,3 +11,6 @@ INSERT INTO LIVRO(nome, autor_id) VALUES('MONA LISA OVERDRIVE', 1)
 INSERT INTO LIVRO(nome, autor_id) VALUES('O ILUMINADO', 2)
 INSERT INTO LIVRO(nome, autor_id) VALUES('O CEMITERIO', 2)
 INSERT INTO LIVRO(nome, autor_id) VALUES('O HOBBIT', 3)
+
+INSERT INTO EMPRESTIMO(data_devolucao, data_emprestimo, usuario_id) VALUES('2022-10-12', '2022-10-05', 1)
+INSERT INTO EMPRESTIMO(data_devolucao, data_emprestimo, usuario_id) VALUES('2022-10-12', '2022-10-05', 2)
