@@ -1,8 +1,10 @@
 package br.com.gustavodepaula.biblioteca.model;
 
+import javax.persistence.Entity;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
 public class Usuario {
     private Long id;
     private String nome;
