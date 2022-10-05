@@ -23,10 +23,21 @@ public class LivroController {
     private AutorRepository autorRepository;
 
     @GetMapping
-    public List<LivroDto> listarLivros(String autor) {
+    public List<LivroDto> listarLivros() {
+        List<Livro> livros = livroRepository.findAll();
+        return LivroDto.converter(livros);
+    }
+
+    @GetMapping("/{id}")
+    public LivroDto listarPorId(@PathVariable Long id) {
+        Livro livro = livroRepository.getReferenceById(id);
+        return new LivroDto(livro);
+    }
+
+    @GetMapping("/autor/{autor}")
+    public List<LivroDto> listarPorAutor(@PathVariable String autor) {
         if (autor == null) {
-            List<Livro> livros = livroRepository.findAll();
-            return LivroDto.converter(livros);
+            return listarLivros();
         } else {
             List<Livro> livros = livroRepository.findByAutor_Nome(autor.toUpperCase());
             return LivroDto.converter(livros);
