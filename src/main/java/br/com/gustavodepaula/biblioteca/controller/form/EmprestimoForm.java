@@ -4,7 +4,10 @@ import br.com.gustavodepaula.biblioteca.model.Emprestimo;
 import br.com.gustavodepaula.biblioteca.model.Usuario;
 import br.com.gustavodepaula.biblioteca.repository.UsuarioRepository;
 
+import javax.validation.constraints.NotNull;
+
 public class EmprestimoForm {
+    @NotNull
     private Long idUsuario;
 
     public Emprestimo converter(UsuarioRepository repository) {

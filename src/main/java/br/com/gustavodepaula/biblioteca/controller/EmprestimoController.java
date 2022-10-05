@@ -1,5 +1,6 @@
 package br.com.gustavodepaula.biblioteca.controller;
 
+import br.com.gustavodepaula.biblioteca.controller.form.AtualizacaoEmprestimoForm;
 import br.com.gustavodepaula.biblioteca.controller.form.EmprestimoForm;
 import br.com.gustavodepaula.biblioteca.dto.EmprestimoDto;
 import br.com.gustavodepaula.biblioteca.model.Emprestimo;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -53,5 +55,12 @@ public class EmprestimoController {
 
         URI uri = uriBuilder.path("/emprestimos/{id}").buildAndExpand(emprestimo.getId()).toUri();
         return ResponseEntity.created(uri).body(new EmprestimoDto(emprestimo));
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<EmprestimoDto> atualizarEmprestimo(@PathVariable Long id, @RequestBody @Valid AtualizacaoEmprestimoForm form) {
+        Emprestimo emprestimo = form.atualizar(id, emprestimoRepository);
+        return ResponseEntity.ok(new EmprestimoDto(emprestimo));
     }
 }
