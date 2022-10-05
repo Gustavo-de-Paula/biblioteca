@@ -1,3 +1,10 @@
 INSERT INTO AUTOR(nome) VALUES('William Gibson')
 INSERT INTO AUTOR(nome) VALUES('Stephen King')
 INSERT INTO AUTOR(nome) VALUES('J. R. R. Tolkien')
+
+INSERT INTO LIVRO(nome, genero, autor_id) VALUES('Neuromancer', 'FICCAO_CIENTIFICA', 1)
+INSERT INTO LIVRO(nome, genero, autor_id) VALUES('Count Zero', 'FICCAO_CIENTIFICA', 1)
+INSERT INTO LIVRO(nome, genero, autor_id) VALUES('Mona Lisa Overdrive', 'FICCAO_CIENTIFICA', 1)
+INSERT INTO LIVRO(nome, genero, autor_id) VALUES('O Iluminado', 'TERROR', 2)
+INSERT INTO LIVRO(nome, genero, autor_id) VALUES('O Cemiterio', 'TERROR', 2)
+INSERT INTO LIVRO(nome, genero, autor_id) VALUES('O Hobbit', 'FANTASIA', 3)
