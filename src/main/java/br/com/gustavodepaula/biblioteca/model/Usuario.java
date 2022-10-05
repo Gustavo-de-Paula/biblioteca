@@ -14,12 +14,6 @@ public class Usuario {
 
     private String nome;
 
-    public Usuario() {
-    }
-    public Usuario(String nome, String email, String telefone) {
-        this.nome = nome;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

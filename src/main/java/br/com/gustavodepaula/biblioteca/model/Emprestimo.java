@@ -18,14 +18,6 @@ public class Emprestimo {
     private LocalDate dataEmprestimo;
     private LocalDate dataDevolucao;
 
-    public Emprestimo() {
-    }
-    public Emprestimo(LocalDate dataDevolucao, Usuario usuario) {
-        this.dataEmprestimo = LocalDate.now();
-        this.dataDevolucao = dataDevolucao;
-        this.usuario = usuario;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
