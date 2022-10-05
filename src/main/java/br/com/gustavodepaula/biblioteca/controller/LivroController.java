@@ -29,8 +29,14 @@ public class LivroController {
     }
 
     @GetMapping("/{id}")
-    public LivroDto listarPorId(@PathVariable Long id) {
+    public LivroDto buscarPorId(@PathVariable Long id) {
         Livro livro = livroRepository.getReferenceById(id);
+        return new LivroDto(livro);
+    }
+
+    @GetMapping("/nome/{nome}")
+    public LivroDto buscarPorNome(@PathVariable String nome) {
+        Livro livro = livroRepository.findByNome(nome.toUpperCase());
         return new LivroDto(livro);
     }
 

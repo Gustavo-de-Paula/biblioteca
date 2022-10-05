@@ -26,13 +26,13 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public UsuarioDto listarPorId(@PathVariable Long id) {
+    public UsuarioDto buscarPorId(@PathVariable Long id) {
         Usuario usuario = usuarioRepository.getReferenceById(id);
         return new UsuarioDto(usuario);
     }
 
     @GetMapping("/nome/{nome}")
-    public UsuarioDto listarPorNome(@PathVariable String nome) {
+    public UsuarioDto buscarPorNome(@PathVariable String nome) {
         Usuario usuario = usuarioRepository.findByNome(nome.toUpperCase());
         return new UsuarioDto(usuario);
     }
@@ -42,7 +42,7 @@ public class UsuarioController {
         Usuario usuario = form.converter();
         usuarioRepository.save(usuario);
 
-        URI uri = uriBuilder.path("/livros/{id}").buildAndExpand(usuario.getId()).toUri();
+        URI uri = uriBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
         return ResponseEntity.created(uri).body(new UsuarioDto(usuario));
     }
 }
