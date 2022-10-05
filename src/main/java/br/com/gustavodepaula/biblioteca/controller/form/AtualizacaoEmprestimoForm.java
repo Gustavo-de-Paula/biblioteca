@@ -10,8 +10,7 @@ public class AtualizacaoEmprestimoForm {
     @NotNull
     private LocalDate dataDevolucao;
 
-    public Emprestimo atualizar(Long id, EmprestimoRepository repository){
-        Emprestimo emprestimo = repository.getReferenceById(id);
+    public Emprestimo atualizar(Emprestimo emprestimo){
         emprestimo.setDataDevolucao(this.dataDevolucao);
         return emprestimo;
     }

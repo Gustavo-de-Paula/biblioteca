@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/emprestimos")
@@ -31,9 +32,13 @@ public class EmprestimoController {
     }
 
     @GetMapping("/{id}")
-    public EmprestimoDto buscarPorId(@PathVariable Long id) {
-        Emprestimo emprestimo = emprestimoRepository.getReferenceById(id);
-        return new EmprestimoDto(emprestimo);
+    public ResponseEntity<EmprestimoDto> buscarPorId(@PathVariable Long id) {
+        Optional<Emprestimo> emprestimo = emprestimoRepository.findById(id);
+
+        if (emprestimo.isPresent())
+            return ResponseEntity.ok(new EmprestimoDto(emprestimo.get()));
+
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/usuario/id/{usuarioId}")
@@ -49,6 +54,7 @@ public class EmprestimoController {
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<EmprestimoDto> cadastrarEmprestimo(@RequestBody @Valid EmprestimoForm form, UriComponentsBuilder uriBuilder) {
         Emprestimo emprestimo = form.converter(usuarioRepository);
         emprestimoRepository.save(emprestimo);
@@ -60,7 +66,26 @@ public class EmprestimoController {
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<EmprestimoDto> atualizarEmprestimo(@PathVariable Long id, @RequestBody @Valid AtualizacaoEmprestimoForm form) {
-        Emprestimo emprestimo = form.atualizar(id, emprestimoRepository);
-        return ResponseEntity.ok(new EmprestimoDto(emprestimo));
+        Optional<Emprestimo> emprestimo = emprestimoRepository.findById(id);
+
+        if (emprestimo.isPresent()){
+            form.atualizar(emprestimo.get());
+            return ResponseEntity.ok(new EmprestimoDto(emprestimo.get()));
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<?> removerEmprestimo(@PathVariable Long id) {
+        Optional<Emprestimo> emprestimo = emprestimoRepository.findById(id);
+
+        if (emprestimo.isPresent()) {
+            emprestimoRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }
