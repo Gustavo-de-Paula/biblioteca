@@ -15,8 +15,13 @@ public class LivroController {
     private LivroRepository livroRepository;
 
     @RequestMapping("/livros")
-    public List<LivroDto> listarLivros(){
-        List<Livro> livros = livroRepository.findAll();
-        return LivroDto.converter(livros);
+    public List<LivroDto> listarLivros(String autor){
+        if (autor == null) {
+            List<Livro> livros = livroRepository.findAll();
+            return LivroDto.converter(livros);
+        } else {
+            List<Livro> livros = livroRepository.findByAutor_Nome(autor);
+            return LivroDto.converter(livros);
+        }
     }
 }
