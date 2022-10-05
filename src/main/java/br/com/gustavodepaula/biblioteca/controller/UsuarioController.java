@@ -1,14 +1,19 @@
 package br.com.gustavodepaula.biblioteca.controller;
 
+import br.com.gustavodepaula.biblioteca.controller.form.LivroForm;
+import br.com.gustavodepaula.biblioteca.controller.form.UsuarioForm;
+import br.com.gustavodepaula.biblioteca.dto.LivroDto;
 import br.com.gustavodepaula.biblioteca.dto.UsuarioDto;
+import br.com.gustavodepaula.biblioteca.model.Livro;
 import br.com.gustavodepaula.biblioteca.model.Usuario;
 import br.com.gustavodepaula.biblioteca.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -37,5 +42,14 @@ public class UsuarioController {
             List<Usuario> usuarios = usuarioRepository.findByNome(nome.toUpperCase());
             return UsuarioDto.converter(usuarios);
         }
+    }
+
+    @PostMapping
+    public ResponseEntity<UsuarioDto> cadastrarUsuario(@RequestBody @Valid UsuarioForm form, UriComponentsBuilder uriBuilder) {
+        Usuario usuario = form.converter();
+        usuarioRepository.save(usuario);
+
+        URI uri = uriBuilder.path("/livros/{id}").buildAndExpand(usuario.getId()).toUri();
+        return ResponseEntity.created(uri).body(new UsuarioDto(usuario));
     }
 }
