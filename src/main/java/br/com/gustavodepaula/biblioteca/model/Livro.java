@@ -17,6 +17,14 @@ public class Livro {
 
     private String nome;
 
+    public Livro() {
+    }
+    public Livro(Genero genero, Autor autor, String nome) {
+        this.genero = genero;
+        this.autor = autor;
+        this.nome = nome;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
