@@ -1,7 +1,6 @@
 package br.com.gustavodepaula.biblioteca.controller.form;
 
 import br.com.gustavodepaula.biblioteca.model.Emprestimo;
-import br.com.gustavodepaula.biblioteca.repository.EmprestimoRepository;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
