@@ -13,6 +13,11 @@ public class AutorForm {
         return new Autor(nome.toUpperCase());
     }
 
+    public Autor atualizar(Autor autor){
+        autor.setNome(this.nome.toUpperCase());
+        return autor;
+    }
+
     public String getNome() {
         return nome;
     }
