@@ -1,14 +1,10 @@
 package br.com.gustavodepaula.biblioteca.controller;
 
-import br.com.gustavodepaula.biblioteca.controller.form.AtualizaEmprestimoForm;
 import br.com.gustavodepaula.biblioteca.controller.form.AutorForm;
 import br.com.gustavodepaula.biblioteca.dto.AutorDto;
-import br.com.gustavodepaula.biblioteca.dto.EmprestimoDto;
 import br.com.gustavodepaula.biblioteca.model.Autor;
-import br.com.gustavodepaula.biblioteca.model.Emprestimo;
 import br.com.gustavodepaula.biblioteca.repository.AutorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -71,6 +67,19 @@ public class AutorController {
         if (autor.isPresent()){
             form.atualizar(autor.get());
             return ResponseEntity.ok(new AutorDto(autor.get()));
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<?> removerAutor(@PathVariable Long id) {
+        Optional<Autor> autor = autorRepository.findById(id);
+
+        if (autor.isPresent()) {
+            autorRepository.deleteById(id);
+            return ResponseEntity.ok().build();
         }
 
         return ResponseEntity.notFound().build();
