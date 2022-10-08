@@ -5,13 +5,16 @@ import br.com.gustavodepaula.biblioteca.dto.AutorDto;
 import br.com.gustavodepaula.biblioteca.model.Autor;
 import br.com.gustavodepaula.biblioteca.repository.AutorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/autores")
@@ -20,21 +23,29 @@ public class AutorController {
     private AutorRepository autorRepository;
 
     @GetMapping
-    public List<AutorDto> listarAutores() {
-        List<Autor> autores = autorRepository.findAll();
+    public Page<AutorDto> listarAutores(@PageableDefault(sort = "id")Pageable pageable) {
+        Page<Autor> autores = autorRepository.findAll(pageable);
         return AutorDto.converter(autores);
     }
 
     @GetMapping("/{id}")
-    public AutorDto buscarPorId(@PathVariable Long id) {
-        Autor autor = autorRepository.getReferenceById(id);
-        return new AutorDto(autor);
+    public ResponseEntity<AutorDto> buscarPorId(@PathVariable Long id) {
+        Optional<Autor> autor = autorRepository.findById(id);
+
+        if (autor.isPresent())
+            return ResponseEntity.ok(new AutorDto(autor.get()));
+
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/nome/{nome}")
-    public AutorDto buscarPorNome(@PathVariable String nome) {
-        Autor autor = autorRepository.findByNome(nome.toUpperCase());
-        return new AutorDto(autor);
+    public ResponseEntity<AutorDto> buscarPorNome(@PathVariable String nome) {
+        Optional<Autor> autor = autorRepository.findByNome(nome.toUpperCase());
+
+        if (autor.isPresent())
+            return ResponseEntity.ok(new AutorDto(autor.get()));
+
+        return ResponseEntity.notFound().build();
     }
 
     @PostMapping

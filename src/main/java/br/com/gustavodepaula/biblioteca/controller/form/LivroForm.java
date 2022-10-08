@@ -14,7 +14,7 @@ public class LivroForm {
     private String nomeAutor;
 
     public Livro converter(AutorRepository repository) {
-        Autor autor = repository.findByNome(nomeAutor.toUpperCase());
+        Autor autor = repository.findByNome(nomeAutor.toUpperCase()).get();
         return new Livro(autor, nome.toUpperCase());
     }
 
