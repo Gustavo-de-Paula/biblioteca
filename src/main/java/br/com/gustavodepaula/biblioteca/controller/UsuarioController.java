@@ -77,4 +77,17 @@ public class UsuarioController {
 
         return ResponseEntity.notFound().build();
     }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<?> removerUsuario(@PathVariable Long id) {
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+
+        if (usuario.isPresent()) {
+            usuarioRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.notFound().build();
+    }
 }
