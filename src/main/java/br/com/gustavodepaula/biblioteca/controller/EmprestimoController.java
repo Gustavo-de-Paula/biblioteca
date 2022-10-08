@@ -31,7 +31,7 @@ public class EmprestimoController {
 
     @GetMapping
     @Cacheable(value = "listaDeEmprestimos")
-    public Page<EmprestimoDto> listarEmprestimos(@PageableDefault(sort = "id")Pageable pageable) {
+    public Page<EmprestimoDto> listarEmprestimos(@PageableDefault(sort = "id") Pageable pageable) {
         Page<Emprestimo> emprestimos = emprestimoRepository.findAll(pageable);
         return EmprestimoDto.converter(emprestimos);
     }

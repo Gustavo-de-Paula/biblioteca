@@ -7,6 +7,9 @@ import br.com.gustavodepaula.biblioteca.model.Livro;
 import br.com.gustavodepaula.biblioteca.repository.AutorRepository;
 import br.com.gustavodepaula.biblioteca.repository.LivroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -14,7 +17,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -26,34 +28,35 @@ public class LivroController {
     private AutorRepository autorRepository;
 
     @GetMapping
-    public List<LivroDto> listarLivros() {
-        List<Livro> livros = livroRepository.findAll();
+    public Page<LivroDto> listarLivros(@PageableDefault(sort = "id") Pageable pageable) {
+        Page<Livro> livros = livroRepository.findAll(pageable);
         return LivroDto.converter(livros);
     }
 
     @GetMapping("/{id}")
-    public LivroDto buscarPorId(@PathVariable Long id) {
-        Livro livro = livroRepository.getReferenceById(id);
-        return new LivroDto(livro);
+    public ResponseEntity<LivroDto> buscarPorId(@PathVariable Long id) {
+        Optional<Livro> livro = livroRepository.findById(id);
+
+        if (livro.isPresent())
+            return ResponseEntity.ok(new LivroDto(livro.get()));
+
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/nome/{nome}")
-    public List<LivroDto> buscarPorNome(@PathVariable String nome) {
-        List<Livro> livros = livroRepository.findByNome(nome.toUpperCase());
+    public Page<LivroDto> buscarPorNome(@PathVariable String nome, @PageableDefault(sort = "id") Pageable pageable) {
+        Page<Livro> livros = livroRepository.findByNome(nome.toUpperCase(), pageable);
         return LivroDto.converter(livros);
     }
 
     @GetMapping("/autor/{autor}")
-    public List<LivroDto> listarPorAutor(@PathVariable String autor) {
-        if (autor == null) {
-            return listarLivros();
-        } else {
-            List<Livro> livros = livroRepository.findByAutor_Nome(autor.toUpperCase());
-            return LivroDto.converter(livros);
-        }
+    public Page<LivroDto> listarPorAutor(@PathVariable String autor, @PageableDefault(sort = "id") Pageable pageable) {
+        Page<Livro> livros = livroRepository.findByAutor_Nome(autor.toUpperCase(), pageable);
+        return LivroDto.converter(livros);
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<LivroDto> cadastrarLivro(@RequestBody @Valid LivroForm form, UriComponentsBuilder uriBuilder) {
         Livro livro = form.converter(autorRepository);
         livroRepository.save(livro);
