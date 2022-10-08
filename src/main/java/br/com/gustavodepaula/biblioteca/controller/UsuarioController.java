@@ -1,16 +1,10 @@
 package br.com.gustavodepaula.biblioteca.controller;
 
-import br.com.gustavodepaula.biblioteca.controller.form.AtualizaEmprestimoForm;
 import br.com.gustavodepaula.biblioteca.controller.form.UsuarioForm;
-import br.com.gustavodepaula.biblioteca.dto.AutorDto;
-import br.com.gustavodepaula.biblioteca.dto.EmprestimoDto;
 import br.com.gustavodepaula.biblioteca.dto.UsuarioDto;
-import br.com.gustavodepaula.biblioteca.model.Autor;
-import br.com.gustavodepaula.biblioteca.model.Emprestimo;
 import br.com.gustavodepaula.biblioteca.model.Usuario;
 import br.com.gustavodepaula.biblioteca.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -21,7 +15,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
