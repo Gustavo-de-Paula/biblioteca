@@ -13,6 +13,11 @@ public class UsuarioForm {
         return new Usuario(nome.toUpperCase());
     }
 
+    public Usuario atualizar(Usuario usuario){
+        usuario.setNome(this.nome.toUpperCase());
+        return usuario;
+    }
+
     public String getNome() {
         return nome;
     }
