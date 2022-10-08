@@ -2,7 +2,6 @@ package br.com.gustavodepaula.biblioteca.controller;
 
 import br.com.gustavodepaula.biblioteca.controller.form.AtualizaLivroForm;
 import br.com.gustavodepaula.biblioteca.controller.form.LivroForm;
-import br.com.gustavodepaula.biblioteca.dto.EmprestimoDto;
 import br.com.gustavodepaula.biblioteca.dto.LivroDto;
 import br.com.gustavodepaula.biblioteca.model.Livro;
 import br.com.gustavodepaula.biblioteca.repository.AutorRepository;
@@ -71,6 +70,19 @@ public class LivroController {
         if (livro.isPresent()){
             form.atualizar(livro.get());
             return ResponseEntity.ok(new LivroDto(livro.get()));
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<?> removerLivro(@PathVariable Long id) {
+        Optional<Livro> livro = livroRepository.findById(id);
+
+        if (livro.isPresent()) {
+            livroRepository.deleteById(id);
+            return ResponseEntity.ok().build();
         }
 
         return ResponseEntity.notFound().build();
