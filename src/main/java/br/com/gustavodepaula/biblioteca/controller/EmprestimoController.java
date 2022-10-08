@@ -1,6 +1,6 @@
 package br.com.gustavodepaula.biblioteca.controller;
 
-import br.com.gustavodepaula.biblioteca.controller.form.AtualizacaoEmprestimoForm;
+import br.com.gustavodepaula.biblioteca.controller.form.AtualizaEmprestimoForm;
 import br.com.gustavodepaula.biblioteca.controller.form.EmprestimoForm;
 import br.com.gustavodepaula.biblioteca.dto.EmprestimoDto;
 import br.com.gustavodepaula.biblioteca.model.Emprestimo;
@@ -72,7 +72,7 @@ public class EmprestimoController {
     @PutMapping("/{id}")
     @Transactional
     @CacheEvict(value = "listaDeEmprestimos", allEntries = true)
-    public ResponseEntity<EmprestimoDto> atualizarEmprestimo(@PathVariable Long id, @RequestBody @Valid AtualizacaoEmprestimoForm form) {
+    public ResponseEntity<EmprestimoDto> atualizarEmprestimo(@PathVariable Long id, @RequestBody @Valid AtualizaEmprestimoForm form) {
         Optional<Emprestimo> emprestimo = emprestimoRepository.findById(id);
 
         if (emprestimo.isPresent()){

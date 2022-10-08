@@ -5,7 +5,7 @@ import br.com.gustavodepaula.biblioteca.model.Emprestimo;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-public class AtualizacaoEmprestimoForm {
+public class AtualizaEmprestimoForm {
     @NotNull
     private LocalDate dataDevolucao;
 

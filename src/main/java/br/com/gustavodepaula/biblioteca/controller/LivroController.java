@@ -1,6 +1,8 @@
 package br.com.gustavodepaula.biblioteca.controller;
 
+import br.com.gustavodepaula.biblioteca.controller.form.AtualizaLivroForm;
 import br.com.gustavodepaula.biblioteca.controller.form.LivroForm;
+import br.com.gustavodepaula.biblioteca.dto.EmprestimoDto;
 import br.com.gustavodepaula.biblioteca.dto.LivroDto;
 import br.com.gustavodepaula.biblioteca.model.Livro;
 import br.com.gustavodepaula.biblioteca.repository.AutorRepository;
@@ -10,9 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/livros")
@@ -57,5 +61,18 @@ public class LivroController {
 
         URI uri = uriBuilder.path("/livros/{id}").buildAndExpand(livro.getId()).toUri();
         return ResponseEntity.created(uri).body(new LivroDto(livro));
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<LivroDto> atualizarLivro(@PathVariable Long id, @RequestBody @Valid AtualizaLivroForm form) {
+        Optional<Livro> livro = livroRepository.findById(id);
+
+        if (livro.isPresent()){
+            form.atualizar(livro.get());
+            return ResponseEntity.ok(new LivroDto(livro.get()));
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }
