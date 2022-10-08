@@ -20,19 +20,19 @@ class AutorRepositoryTest {
 
     @Test
     public void CarregaUmAutorAoBuscarPeloNome() {
-        String nomeAutor = "WILLIAM GIBSON";
+        String nomeAutor = "william gibson";
         Autor autor =  new Autor();
-        autor.setNome(nomeAutor);
+        autor.setNome(nomeAutor.toUpperCase());
         entityManager.persist(autor);
 
         Assertions.assertNotNull(autor);
-        Assertions.assertEquals(nomeAutor, autor.getNome());
+        Assertions.assertEquals(nomeAutor.toUpperCase(), autor.getNome());
     }
 
     @Test
     public void naoCarregaAutorCasoNomeNaoEstejaNaDatabase() {
-        String nomeAutor = "WILLIAM GIBSON";
-        Autor autor =  repository.findByNome(nomeAutor).orElse(null);
+        String nomeAutor = "william gibson";
+        Autor autor =  repository.findByNome(nomeAutor.toUpperCase()).orElse(null);
         Assertions.assertNull(autor);
     }
 }
