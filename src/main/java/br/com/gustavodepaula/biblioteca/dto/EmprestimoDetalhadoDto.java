@@ -4,24 +4,29 @@ import br.com.gustavodepaula.biblioteca.model.Emprestimo;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class EmprestimoDto {
+public class EmprestimoDetalhadoDto {
     private Long id;
     private Long idUsuario;
     private String nomeUsuario;
     private LocalDate dataEmprestimo;
     private LocalDate dataDevolucao;
+    private List<LivroDto> livros;
 
-    public EmprestimoDto() {
+    public EmprestimoDetalhadoDto() {
     }
-    public EmprestimoDto(Emprestimo emprestimo) {
+    public EmprestimoDetalhadoDto(Emprestimo emprestimo) {
         this.id = emprestimo.getId();
         this.idUsuario = emprestimo.getUsuario().getId();
         this.nomeUsuario = emprestimo.getUsuario().getNome();
         this.dataEmprestimo = emprestimo.getDataEmprestimo();
         this.dataDevolucao = emprestimo.getDataDevolucao();
+
+        this.livros = new ArrayList<>();
+        this.livros.addAll(emprestimo.getLivros().stream().map(LivroDto::new).collect(Collectors.toList()));
     }
 
     public static List<EmprestimoDto> converter(List<Emprestimo> emprestimos){
@@ -46,5 +51,8 @@ public class EmprestimoDto {
     }
     public LocalDate getDataDevolucao() {
         return dataDevolucao;
+    }
+    public List<LivroDto> getLivros() {
+        return livros;
     }
 }

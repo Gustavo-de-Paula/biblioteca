@@ -2,6 +2,7 @@ package br.com.gustavodepaula.biblioteca.controller;
 
 import br.com.gustavodepaula.biblioteca.controller.form.AtualizaEmprestimoForm;
 import br.com.gustavodepaula.biblioteca.controller.form.EmprestimoForm;
+import br.com.gustavodepaula.biblioteca.dto.EmprestimoDetalhadoDto;
 import br.com.gustavodepaula.biblioteca.dto.EmprestimoDto;
 import br.com.gustavodepaula.biblioteca.model.Emprestimo;
 import br.com.gustavodepaula.biblioteca.repository.EmprestimoRepository;
@@ -37,11 +38,11 @@ public class EmprestimoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EmprestimoDto> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<EmprestimoDetalhadoDto> buscarPorId(@PathVariable Long id) {
         Optional<Emprestimo> emprestimo = emprestimoRepository.findById(id);
 
         if (emprestimo.isPresent())
-            return ResponseEntity.ok(new EmprestimoDto(emprestimo.get()));
+            return ResponseEntity.ok(new EmprestimoDetalhadoDto(emprestimo.get()));
 
         return ResponseEntity.notFound().build();
     }
