@@ -20,12 +20,13 @@ class LivroRepositoryTest {
     private EntityManager entityManager;
 
     @Test
-    public void carregaUmLivroAoBuscarPeloId() {
-        Long id = 1L;
+    public void carregaUmLivroAoBuscarPeloNome() {
+        String nome = "neuromancer";
         Livro livro = new Livro();
+        livro.setNome(nome.toUpperCase());
         entityManager.persist(livro);
 
         Assertions.assertNotNull(livro);
-        Assertions.assertEquals(id, livro.getId());
+        Assertions.assertEquals(nome.toUpperCase(), livro.getNome());
     }
 }
