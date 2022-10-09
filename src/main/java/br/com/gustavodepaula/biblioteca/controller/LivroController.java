@@ -5,6 +5,7 @@ import br.com.gustavodepaula.biblioteca.controller.form.LivroForm;
 import br.com.gustavodepaula.biblioteca.dto.LivroDto;
 import br.com.gustavodepaula.biblioteca.model.Livro;
 import br.com.gustavodepaula.biblioteca.repository.AutorRepository;
+import br.com.gustavodepaula.biblioteca.repository.EmprestimoRepository;
 import br.com.gustavodepaula.biblioteca.repository.LivroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,8 @@ public class LivroController {
     private LivroRepository livroRepository;
     @Autowired
     private AutorRepository autorRepository;
+    @Autowired
+    private EmprestimoRepository emprestimoRepository;
 
     @GetMapping
     public Page<LivroDto> listarLivros(@PageableDefault(sort = "id") Pageable pageable) {
@@ -71,7 +74,7 @@ public class LivroController {
         Optional<Livro> livro = livroRepository.findById(id);
 
         if (livro.isPresent()){
-            form.atualizar(livro.get());
+            form.atualizar(livro.get(), emprestimoRepository);
             return ResponseEntity.ok(new LivroDto(livro.get()));
         }
 
